@@ -9,12 +9,12 @@
     </settings>
 
     <typeAliases>
-        <package name="com.fremont.domain"/>
+        <package name="com.fremont.settings.domain"/>
 
     </typeAliases>
 
 
     <mappers>
-        <package name="com.fremont.dao"/>
+        <package name="com.fremont.settings.dao"/>
     </mappers>
 </configuration>

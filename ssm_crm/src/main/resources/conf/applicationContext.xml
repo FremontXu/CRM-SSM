@@ -4,8 +4,8 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.fremont.service"/>
-    <context:component-scan base-package="com.fremont.dao"/>
+    <context:component-scan base-package="com.fremont.settings.service"/>
+    <context:component-scan base-package="com.fremont.settings.dao"/>
     <context:property-placeholder location="classpath:conf/jdbc.properties"/>
 
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
@@ -22,7 +22,7 @@
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="factory"/>
-        <property name="basePackage" value="com.fremont.dao"/>
+        <property name="basePackage" value="com.fremont.settings.dao"/>
     </bean>
 
 </beans>

@@ -4,19 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <repositories>
-    <repository>
-      <id>alimaven</id>
-      <url>https://maven.aliyun.com/repository/public</url>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>alimaven</id>
-      <url>https://maven.aliyun.com/repository/public</url>
-    </pluginRepository>
-  </pluginRepositories>
+  <!-- -->
 
 
   <groupId>com.fremont</groupId>
@@ -57,6 +45,8 @@
       <version>2.2.1-b03</version>
       <scope>provided</scope>
     </dependency>
+
+    <!-- jstl -->
 
     <dependency>
       <groupId>org.springframework</groupId>

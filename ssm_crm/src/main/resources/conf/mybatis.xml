@@ -10,11 +10,12 @@
 
     <typeAliases>
         <package name="com.fremont.settings.domain"/>
-
+        <package name="com.fremont.workbench.domain"/>
     </typeAliases>
 
 
     <mappers>
         <package name="com.fremont.settings.dao"/>
+        <package name="com.fremont.workbench.dao"/>
     </mappers>
 </configuration>

@@ -4,6 +4,8 @@ import com.fremont.exception.LoginException;
 import com.fremont.exception.UserException;
 import com.fremont.settings.domain.User;
 
+import java.util.List;
+
 /**
  * @Author：xuhongfei
  * @Version：1.0
@@ -14,5 +16,7 @@ import com.fremont.settings.domain.User;
 public interface UserService {
 
     User login(String loginAct, String loginPwd);
+
+    List<User> getUserList();
 
 }

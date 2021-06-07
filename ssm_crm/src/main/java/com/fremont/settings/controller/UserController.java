@@ -5,10 +5,8 @@ import com.fremont.settings.domain.User;
 import com.fremont.settings.service.UserService;
 import com.fremont.utils.DateTimeUtil;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 
 import javax.annotation.Resource;
@@ -32,9 +30,10 @@ public class UserController {
 
     /**
      * 处理登录
+     *
      * @param loginAct 登录账号
      * @param loginPwd 登录密码
-     * @param request 请求
+     * @param request  请求
      * @throws LoginException 登录失败异常
      */
     @RequestMapping("/login.do")
@@ -74,12 +73,23 @@ public class UserController {
         //登录成功
         System.out.println("登录成功");
         request.getSession().setAttribute("user", user);
+
         Map<String, Object> map = new HashMap<>();
         map.put("result", true);
-        map.put("msg", "登录成功");
-
         return map;
     }
 
+    /**
+     * 注销登录
+     *
+     * @param request 请求
+     * @return 返回到登录页面
+     */
+    @RequestMapping("/logOut.do")
+    public String logOut(HttpServletRequest request) {
+        request.getSession().invalidate();
+        System.out.println("注销");
+        return "login";
+    }
 
 }

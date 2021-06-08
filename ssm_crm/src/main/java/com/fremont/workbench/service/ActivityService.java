@@ -21,4 +21,8 @@ public interface ActivityService {
     PaginationVo<Activity> pageList(Map<String,Object> map);
 
     int delAct(String[] ids);
+
+    Activity getActById(String id);
+
+    Boolean updateAct(Activity a);
 }

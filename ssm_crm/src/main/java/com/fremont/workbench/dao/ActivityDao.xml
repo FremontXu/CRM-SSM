@@ -79,4 +79,35 @@
         </foreach>
     </delete>
 
+    <select id="getActById" resultType="Activity">
+        select
+            a.id,
+            a.name,
+            u.name as owner,
+            a.startDate,
+            a.endDate,
+            a.cost,
+            a.description,
+            a.createTime,
+            a.createBy,
+            a.editTime,
+            a.createBy
+        from tbl_activity a join tbl_user u on a.owner=u.id
+        where a.id = #{id}
+    </select>
+
+    <update id="updateAct">
+        update tbl_activity
+        set
+            owner       = #{owner},
+            name        = #{name},
+            startDate   = #{startDate},
+            endDate     = #{endDate},
+            cost        = #{cost},
+            description = #{description},
+            editTime    = #{editTime},
+            editBy      = #{editBy}
+        where id = #{id}
+    </update>
+
 </mapper>

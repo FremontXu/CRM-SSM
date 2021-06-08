@@ -23,8 +23,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             System.out.println("---------------------未登录---------------------");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
             return false;
         }
 

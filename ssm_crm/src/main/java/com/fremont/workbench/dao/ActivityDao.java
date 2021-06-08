@@ -22,4 +22,8 @@ public interface ActivityDao {
     List<Activity> getActListByCondition(Map<String,Object> map);
 
     int delAct(String[] ids);
+
+    Activity getActById(String id);
+
+    int updateAct(Activity a);
 }

@@ -82,7 +82,7 @@
         <div class="page-header">
             <h1>登录</h1>
         </div>
-        <form action="" class="form-horizontal" role="form">
+        <form class="form-horizontal" role="form">
             <div class="form-group form-group-lg">
                 <div style="width: 350px;">
                     <input class="form-control" type="text" placeholder="用户名" id="loginAct">
@@ -95,7 +95,7 @@
                     <span id="msg"></span>
 
                 </div>
-                <button id="loginBtn" class="btn btn-primary btn-lg btn-block"
+                <button id="loginBtn" class="btn btn-primary btn-lg btn-block" type="button"
                         style="width: 350px; position: relative;top: 45px;">登录
                 </button>
             </div>

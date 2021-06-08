@@ -50,4 +50,16 @@ public class ActivityServiceImpl implements ActivityService {
         int i = activityDao.delAct(ids);
         return i;
     }
+
+    @Override
+    public Activity getActById(String id) {
+        return activityDao.getActById(id);
+    }
+
+    @Override
+    public Boolean updateAct(Activity a) {
+        int i = activityDao.updateAct(a);
+        return i > 0;
+    }
+
 }

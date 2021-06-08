@@ -1,5 +1,9 @@
 package com.fremont.workbench.dao;
 
+import com.fremont.workbench.domain.ActivityRemark;
+
+import java.util.List;
+
 /**
  * @Author：xuhongfei
  * @Version：1.0
@@ -9,6 +13,11 @@ package com.fremont.workbench.dao;
  */
 public interface ActivityRemarkDao {
 
+    int saveRemark(ActivityRemark ar);
 
+    List<ActivityRemark> getRemarkListByAid(String activityId);
 
+    int updateRemark(ActivityRemark ar);
+
+    int delRemark(String id);
 }

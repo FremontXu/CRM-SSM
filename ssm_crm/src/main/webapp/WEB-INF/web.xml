@@ -1,67 +1,71 @@
 <!--<!DOCTYPE web-app PUBLIC-->
- <!--"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"-->
- <!--"http://java.sun.com/dtd/web-app_2_3.dtd" >-->
+<!--"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"-->
+<!--"http://java.sun.com/dtd/web-app_2_3.dtd" >-->
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+    <display-name>Archetype Created Web Application</display-name>
 
-  <!--spring监听器-->
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:conf/applicationContext.xml</param-value>
-  </context-param>
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
+    <!--spring监听器-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:conf/applicationContext.xml</param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!--初始化数据字典监听器-->
+    <listener>
+        <listener-class>com.fremont.handle.SysListener</listener-class>
+    </listener>
 
-  <!--springmvc中央调度器-->
-  <servlet>
-    <servlet-name>dispatcherServlet</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <!--自定义配置文件的位置
- 	DispatcherServlet其继承自 FrameworkServlet
-	属性 contextConfigLocation，用于设置SpringMVC配置文件的路径及文件名
-	-->
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:conf/dispatcherServlet.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>dispatcherServlet</servlet-name>
-    <url-pattern>*.do</url-pattern>
-  </servlet-mapping>
+    <!--springmvc中央调度器-->
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!--自定义配置文件的位置
+         DispatcherServlet其继承自 FrameworkServlet
+        属性 contextConfigLocation，用于设置SpringMVC配置文件的路径及文件名
+        -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:conf/dispatcherServlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
 
-  <filter>
-    <!--
-		最好将该过滤器注册在其它过滤器之前
-		因为过滤器的执行是按照其注册顺序进行的
-	-->
-    <filter-name>characterEncodingFilter</filter-name>
-    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-    <!--给过滤器属性赋值-->
-    <init-param>
-      <!--项目使用的字符编码-->
-      <param-name>encoding</param-name>
-      <param-value>utf-8</param-value>
-    </init-param>
-    <init-param>
-      <!--强制请求（request）对象使用encoding的编码方式-->
-      <param-name>forceRequestEncoding</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
-      <!--强制应答（response）对象使用encoding的编码方式-->
-      <param-name>forceResponseEncoding</param-name>
-      <param-value>true</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>characterEncodingFilter</filter-name>
-    <!--强制所有请求，先经过过滤器处理-->
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+    <filter>
+        <!--
+            最好将该过滤器注册在其它过滤器之前
+            因为过滤器的执行是按照其注册顺序进行的
+        -->
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <!--给过滤器属性赋值-->
+        <init-param>
+            <!--项目使用的字符编码-->
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+        <init-param>
+            <!--强制请求（request）对象使用encoding的编码方式-->
+            <param-name>forceRequestEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <!--强制应答（response）对象使用encoding的编码方式-->
+            <param-name>forceResponseEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <!--强制所有请求，先经过过滤器处理-->
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 </web-app>
 

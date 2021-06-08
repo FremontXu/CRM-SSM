@@ -2,7 +2,6 @@
 <%
     String basePath = request.getScheme() + "://" + request.getServerName()
             + ":" + request.getServerPort() + request.getContextPath() + "/";
-
 %>
 <!DOCTYPE html>
 <html>
@@ -36,7 +35,7 @@
                 pickerPosition: "bottom-left"
             });
 
-            //创建活动
+            //选择创建
             $("#addBtn").click(function () {
                 //操作模态窗口 传递参数
                 $.ajax({
@@ -64,7 +63,7 @@
 
             });
 
-            //修改
+            //选择修改
             $("#upBtn").click(function () {
                 var $xz = $(":checkbox[name='xz']:checked");
                 if($xz.length == 0){
@@ -93,7 +92,7 @@
 
                             $.each(data.uList,function(i,n){
                                 html += "<option value='"+n.id+"'>"+n.name+"</option>";
-                            })
+                            });
                             $("#edit-owner").html(html);
 
                             // 处理单条activity
@@ -127,7 +126,7 @@
                     type: "post",
                     dataType: "json",
                     success: function (data) {
-                        if (data.result) {
+                        if (data) {
                             //添加成功
                             pageList(1, $("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
                             //清空内容
@@ -142,6 +141,36 @@
                 });
             });
 
+            //保存修改
+            $("#updateBtn").click(function () {
+                $.ajax({
+                    url:"act/updateAct.do",
+                    type:"post",
+                    data:{
+                        "id":$.trim($("#edit-id").val()),
+                        "owner":$.trim($("#edit-owner").val()),
+                        "name":$.trim($("#edit-name").val()),
+                        "startDate":$.trim($("#edit-startDate").val()),
+                        "endDate":$.trim($("#edit-endDate").val()),
+                        "cost":$.trim($("#edit-cost").val()),
+                        "description":$.trim($("#edit-description").val())
+                    },
+                    dataType:"json",
+                    success:function(data){
+                        if(data){
+                            pageList($("#activityPage").bs_pagination('getOption', 'currentPage')
+                                ,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+
+                            // 关闭修改操作的模态窗口
+                            $("#editActivityModal").modal("hide");
+
+                        }else{
+                            alert("修改市场活动失败");
+                        }
+                    }
+                })
+            });
+
             //全选
             $("#qx").click(function () {
                 $(":checkbox[name='xz']").prop("checked", this.checked);
@@ -150,7 +179,7 @@
             /**
              * 动态生成的元素,我们要以on方法的形式来触发事件
              * 语法:
-             *        $(需要绑定元素的有效的外层元素).on(绑定事件的方式,需要绑定的元素的jquery对象,回调函数)
+             * $(需要绑定元素的有效的外层元素).on(绑定事件的方式,需要绑定的元素的jquery对象,回调函数)
              */
             $("#activityBody").on("click", $(":checkbox[name='xz']"), function () {
                 $("#qx").prop("checked", $(":checkbox[name='xz']").length == $(":checkbox[name='xz']:checked").length);
@@ -172,7 +201,38 @@
 
             //绑定删除
             $("#delBtn").click(function () {
-                delAct();
+                // 找到复选框中所有选中的复选框的jquery对象
+                var $xz = $(":checkbox[name='xz']:checked");
+                if ($xz.length === 0) {
+                    alert("请选择需要删除的记录");
+                } else {
+                    if (confirm("确定删除所选中的记录吗?")) {
+                        // 拼接参数
+                        var param = "";
+                        // 将$xz中的每一个dom对象遍历出来,取其value值
+                        for (var i = 0; i < $xz.length; i++) {
+                            param += "id=" + $($xz[i]).val();
+                            // 如果不是最后一个元素,需要在后面追加一个&符
+                            if (i < $xz.length - 1) {
+                                param += "&";
+                            }
+                        }
+                        $.ajax({
+                            url: "act/delAct.do",
+                            type: "post",
+                            data: param,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data) {
+                                    // 删除成功
+                                    pageList(1, $("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+                                } else {
+                                    alert("删除失败");
+                                }
+                            }
+                        })
+                    }
+                }
             });
 
             //进入时显示
@@ -211,7 +271,7 @@
                     $.each(data.dataList, function (i, n) {
                         html += '<tr class="active">';
                         html += '<td><input type="checkbox" name="xz" value=' + n.id + ' /></td>';
-                        html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'act/detail.do?id=' + n.id + '\';">' + n.name + '</a></td>';
+                        html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'act/detailAct.do?id=' + n.id + '\';">' + n.name + '</a></td>';
                         html += '<td>' + n.owner + '</td>';
                         html += '<td>' + n.startDate + '</td>';
                         html += '<td>' + n.endDate + '</td>';
@@ -249,43 +309,6 @@
                 }
             });
 
-        }
-
-        //多选删除
-        function delAct() {
-
-            // 找到复选框中所有选中的复选框的jquery对象
-            var $xz = $(":checkbox[name='xz']:checked");
-            if ($xz.length === 0) {
-                alert("请选择需要删除的记录");
-            } else {
-                if (confirm("确定删除所选中的记录吗?")) {
-                    // 拼接参数
-                    var param = "";
-                    // 将$xz中的每一个dom对象遍历出来,取其value值
-                    for (var i = 0; i < $xz.length; i++) {
-                        param += "id=" + $($xz[i]).val();
-                        // 如果不是最后一个元素,需要在后面追加一个&符
-                        if (i < $xz.length - 1) {
-                            param += "&";
-                        }
-                    }
-                    $.ajax({
-                        url: "act/delAct.do",
-                        type: "post",
-                        data: param,
-                        dataType: "json",
-                        success: function (data) {
-                            if (data) {
-                                // 删除成功
-                                pageList(1, $("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
-                            } else {
-                                alert("删除失败");
-                            }
-                        }
-                    })
-                }
-            }
         }
 
     </script>
@@ -380,10 +403,10 @@
                     <input type="hidden" id="edit-id" />
 
                     <div class="form-group">
-                        <label for="edit-marketActivityOwner" class="col-sm-2 control-label">所有者<span
+                        <label for="edit-owner" class="col-sm-2 control-label">所有者<span
                                 style="font-size: 15px; color: red;">*</span></label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <select class="form-control" id="edit-marketActivityOwner" id="edit-owner">
+                            <select class="form-control" id="edit-owner">
 
                             </select>
                         </div>
@@ -395,27 +418,27 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="edit-startTime" class="col-sm-2 control-label">开始日期</label>
+                        <label for="edit-startDate" class="col-sm-2 control-label">开始日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control time" id="edit-startTime" readonly>
+                            <input type="text" class="form-control time" id="edit-startDate" readonly>
                         </div>
-                        <label for="edit-endTime" class="col-sm-2 control-label">结束日期</label>
+                        <label for="edit-endDate" class="col-sm-2 control-label">结束日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control time" id="edit-endTime" readonly>
+                            <input type="text" class="form-control time" id="edit-endDate" readonly>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="edit-cost" class="col-sm-2 control-label">成本</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-cost" value="5,000">
+                            <input type="text" class="form-control" id="edit-cost">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="edit-describe" class="col-sm-2 control-label">描述</label>
+                        <label for="edit-description" class="col-sm-2 control-label">描述</label>
                         <div class="col-sm-10" style="width: 81%;">
-                            <textarea class="form-control" rows="3" id="edit-describe"></textarea>
+                            <textarea class="form-control" rows="3" id="edit-description"></textarea>
                         </div>
                     </div>
 
@@ -429,7 +452,6 @@
         </div>
     </div>
 </div>
-
 
 <div>
     <div style="position: relative; left: 10px; top: -10px;">
@@ -463,14 +485,14 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">开始日期</div>
-                        <input class="form-control" type="text" id="search-startTime"/>
+                        <input class="form-control time" type="text" id="search-startTime" readonly/>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">结束日期</div>
-                        <input class="form-control" type="text" id="search-endTime">
+                        <input class="form-control time" type="text" id="search-endTime" readonly/>
                     </div>
                 </div>
 
@@ -480,17 +502,17 @@
         </div>
         <div class="btn-toolbar" role="toolbar"
              style="background-color: #F7F7F7; height: 50px; position: relative;top: 5px;">
+            <!-- data-toggle="modal" data-target="#createActivityModal"-->
+            <!-- data-toggle="modal" data-target="#editActivityModal"-->
             <div class="btn-group" style="position: relative; top: 18%;">
-                <button type="button" class="btn btn-primary" id="addBtn" data-toggle="modal"
-                        data-target="#createActivityModal">
+                <button type="button" class="btn btn-primary" id="addBtn">
                     <span class="glyphicon glyphicon-plus"></span> 创建
                 </button>
-                <button type="button" class="btn btn-default" id="upBtn" data-toggle="modal"
-                        data-target="#editActivityModal"><span
-                        class="glyphicon glyphicon-pencil"></span> 修改
+                <button type="button" class="btn btn-default" id="upBtn">
+                    <span class="glyphicon glyphicon-pencil"></span> 修改
                 </button>
-                <button type="button" class="btn btn-danger" id="delBtn"><span class="glyphicon glyphicon-minus"></span>
-                    删除
+                <button type="button" class="btn btn-danger" id="delBtn">
+                    <span class="glyphicon glyphicon-minus"></span> 删除
                 </button>
             </div>
 

@@ -11,12 +11,37 @@
 
     </select>
 
-    <delete id="delete">
+    <delete id="delRemark">
 
         delete from tbl_clue_remark where id=#{id}
 
     </delete>
-  	
+
+    <insert id="saveRemark">
+        insert into tbl_clue_remark(
+        id,
+        noteContent,
+        createTime,
+        createBy,
+        editFlag,
+        clueId
+        )
+        values(
+        #{id},
+        #{noteContent},
+        #{createTime},
+        #{createBy},
+        #{editFlag},
+        #{clueId}
+        )
+    </insert>
+
+    <update id="updateRemark">
+        update tbl_clue_remark set noteContent=#{noteContent},editBy=#{editBy},editTime=#{editTime},editFlag=#{editFlag}
+        where id=#{id}
+    </update>
+
+
 </mapper>
 
 

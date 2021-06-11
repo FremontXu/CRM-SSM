@@ -122,6 +122,13 @@
         </ul>
     </div>
 </div>
+
+<!-- 返回按钮 -->
+<div style="position: relative; top: 35px; left: 10px;">
+    <a href="javascript:void(0);" onclick="window.history.back();"><span class="glyphicon glyphicon-arrow-left"
+                                                                         style="font-size: 20px; color: #DDDDDD"></span></a>
+</div>
+
 <script>
     function logOut() {
         window.location.href = "${pageContext.request.contextPath}/user/logOut.do";

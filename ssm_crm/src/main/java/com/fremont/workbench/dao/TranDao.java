@@ -17,4 +17,8 @@ public interface TranDao {
     int getTotal();
 
     List<Map<String, Object>> getChars();
+
+    int delete(String id);
+
+    List<Tran> pageList(Map<String,Object> map);
 }

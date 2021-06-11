@@ -16,8 +16,7 @@
     <script type="text/javascript" src="../../jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
     <script type="text/javascript"
             src="../../jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript"
-            src="../../jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+
 
 </head>
 <body>
@@ -128,7 +127,6 @@
     <h3>更新交易</h3>
     <div style="position: relative; top: -40px; left: 70%;">
         <button type="button" class="btn btn-primary">更新</button>
-        <button type="button" class="btn btn-default">取消</button>
     </div>
     <hr style="position: relative; top: -40px;">
 </div>

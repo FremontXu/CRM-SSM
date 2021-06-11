@@ -109,9 +109,6 @@
             // 为更新按钮绑定事件
             $("#updateRemarkBtn").click(updateRemark);
 
-            // 为编辑按钮绑定事件
-            //$("#edit-clue").click(edit_clue);
-
             //删除此活动
             $("#delBtn").click(function () {
                 if (confirm("确定删除此条记录吗?")) {
@@ -135,20 +132,6 @@
             });
 
         });
-
-        <%--function edit_clue() {--%>
-            <%--$.ajax({--%>
-                <%--url: "",--%>
-                <%--type: "post",--%>
-                <%--data: {--%>
-                    <%--idL:${requestScope.c.id}--%>
-                <%--},--%>
-                <%--dataType: "json",--%>
-                <%--success: function (data) {--%>
-
-                <%--}--%>
-            <%--})--%>
-        <%--}--%>
 
         //显示备注列表
         function showRemarkList() {
@@ -193,7 +176,6 @@
 
         //备注 绑定 删除
         function deleteRemark(id) {
-
             $.ajax({
                 url: "act/deleteRemarkById.do",
                 data: {
@@ -232,7 +214,6 @@
 
         //备注绑定修改
         function updateRemark() {
-
             var id = $("#remarkId").val();
             $.ajax({
                 url: "act/updateRemark.do",

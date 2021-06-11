@@ -113,9 +113,7 @@
     </select>
 
     <delete id="delete">
-
         delete from tbl_clue where id=#{id}
-
     </delete>
 
     <select id="getById" resultType="com.fremont.workbench.domain.Clue">

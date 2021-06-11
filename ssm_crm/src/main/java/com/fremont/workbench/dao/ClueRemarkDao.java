@@ -9,5 +9,9 @@ public interface ClueRemarkDao {
 
     List<ClueRemark> getListByClueId(String clueId);
 
-    int delete(ClueRemark clueRemark);
+    int delRemark(String id);
+
+    int saveRemark(ClueRemark clueRemark);
+
+    int updateRemark(ClueRemark clueRemark);
 }

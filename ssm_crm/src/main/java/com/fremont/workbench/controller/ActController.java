@@ -204,7 +204,7 @@ public class ActController {
      */
     @RequestMapping("/saveRemark.do")
     @ResponseBody
-    public Object saveRemark(HttpSession session, ActivityRemark ar) {
+    public Object saveActRemark(HttpSession session, ActivityRemark ar) {
         System.out.println("保存备注");
 
         String id = UUIDUtil.getUUID();
@@ -219,10 +219,6 @@ public class ActController {
 
         boolean flag = activityRemarkService.saveRemark(ar);
 
-        /*
-         data
-         {"success":true/false,"ar":{备注}}
-         */
         Map<String, Object> map = new HashMap<>();
         map.put("success", flag);
         map.put("ar", ar);

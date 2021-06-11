@@ -25,4 +25,10 @@ public interface ActivityService {
     Activity getActById(String id);
 
     Boolean updateAct(Activity a);
+
+    List<Activity> getActivityListByClueId(String clueId);
+
+    List<Activity> getActivityListByNameAndNotByClueId(Map<String,String> map);
+
+    List<Activity> getActivityListByName(String aname);
 }

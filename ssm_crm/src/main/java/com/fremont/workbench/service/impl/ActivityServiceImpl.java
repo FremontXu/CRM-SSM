@@ -62,4 +62,19 @@ public class ActivityServiceImpl implements ActivityService {
         return i > 0;
     }
 
+    @Override
+    public List<Activity> getActivityListByClueId(String clueId) {
+        return activityDao.getActivityListByClueId(clueId);
+    }
+
+    @Override
+    public List<Activity> getActivityListByNameAndNotByClueId(Map<String, String> map) {
+        return activityDao.getActivityListByNameAndNotByClueId(map);
+    }
+
+    @Override
+    public List<Activity> getActivityListByName(String aname) {
+        return activityDao.getActivityListByName(aname);
+    }
+
 }

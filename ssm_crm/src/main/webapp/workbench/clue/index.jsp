@@ -42,6 +42,7 @@
                 $("#qx").prop("checked", $(":checkbox[name='xz']").length == $(":checkbox[name='xz']:checked").length);
             });
 
+            //添加
             $("#addBtn").click(function () {
                 $.ajax({
                     url: "clue/userList.do",
@@ -98,6 +99,152 @@
                 })
             });
 
+            //删除 多选
+            $("#delete-button").click(function () {
+                // 找到复选框中所有选中的复选框的jquery对象
+                var $xz = $(":checkbox[name='xz']:checked");
+                if ($xz.length === 0) {
+                    alert("请选择需要删除的记录");
+                }else {
+                    if (confirm("确定删除所选中的记录吗?")){
+                        // 拼接参数
+                        var param = "";
+                        // 将$xz中的每一个dom对象遍历出来,取其value值
+                        for (var i = 0; i < $xz.length; i++) {
+                            param += "id=" + $($xz[i]).val();
+                            // 如果不是最后一个元素,需要在后面追加一个&符
+                            if (i < $xz.length - 1) {
+                                param += "&";
+                            }
+                        }
+                        $.ajax({
+                            url: "clue/delClue.do",
+                            type: "post",
+                            data: param,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data) {
+                                    // 刷新页面
+                                    pageList(1, $("#cluePage").bs_pagination('getOption', 'rowsPerPage'));
+                                } else {
+                                    alert("删除失败");
+                                }
+                            }
+                        })
+                    }
+                }
+
+            });
+
+            //更新
+            $("#edit-button").click(function () {
+
+                var $xz = $(":checkbox[name='xz']:checked");
+                if ($xz.length == 0) {
+                    alert("请选择要修改的记录");
+                } else if ($xz.length > 1) {
+                    alert("只能选择一条记录进行修改");
+                } else if ($xz.length == 1) {
+
+                    $.ajax({
+                        url: "clue/userList.do",
+                        data: {},
+                        type: "post",
+                        dataType: "json",
+                        success: function (data) {
+                            //处理数据
+                            var html = "<option></option>";
+                            $.each(data, function (i, n) {
+                                html += "<option value='" + n.id + "'>" + n.name + "</option>";
+                            });
+                            $("#edit-clueOwner").html(html);
+                            var id = "${sessionScope.user.id}";
+                            $("#edit-clueOwner").val(id);   // 默认select标签选中当前用户
+
+                        }
+                    });
+
+                    var id = $xz.val();
+                    $.ajax({
+                        url: "clue/getClue.do",
+                        type: "get",
+                        data: {
+                            "id": id
+                        },
+                        dataType: "json",
+                        success: function (data) {
+
+                            $("#edit-fullname").val(data.fullname);
+                            $("#edit-appellation").val(data.appellation);
+                            $("#edit-clueOwner").val(data.owner);
+                            $("#edit-company").val(data.company);
+                            $("#edit-job").val(data.job);
+                            $("#edit-email").val(data.email);
+                            $("#edit-phone").val(data.phone);
+                            $("#edit-website").val(data.website);
+                            $("#edit-mphone").val(data.mphone);
+                            $("#edit-state").val(data.state);
+                            $("#edit-source").val(data.source);
+                            $("#edit-description").val(data.description);
+                            $("#edit-contactSummary").val(data.contactSummary);
+                            $("#edit-nextContactTime").val(data.nextContactTime);
+                            $("#edit-address").val(data.address);
+
+                            // 所有的值都填写好之后,打开修改操作的模态窗口
+                            $("#editClueModal").modal("show");
+                        }
+                    })
+                }
+            });
+            $("#updateClue").click(function () {
+                $.ajax({
+                    url: "clue/updateClue.do",
+                    type: "post",
+                    data: {
+                        "id": $(":checkbox[name='xz']:checked").val(),
+                        "company": $("#edit-company").val(),
+                        "fullname": $("#edit-fullname").val(),
+                        "job": $("#edit-job").val(),
+                        "email": $("#edit-email").val(),
+                        "phone": $("#edit-phone").val(),
+                        "website": $("#edit-website").val(),
+                        "mphone": $("#edit-mphone").val(),
+                        "description": $("#edit-description").val(),
+                        "contactSummary": $("#edit-contactSummary").val(),
+                        "nextContactTime": $("#edit-nextContactTime").val(),
+                        "address": $("#edit-address").val(),
+                        "owner": $("#edit-clueOwner").val(),
+                        "source": $("#edit-source").val(),
+                        "state": $("#edit-state").val(),
+                        "appellation": $("#edit-appellation").val()
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data) {
+                            // 更新列表
+                            pageList(1, $("#cluePage").bs_pagination('getOption', 'rowsPerPage'));
+                            // 关闭修改线索的模态窗口
+                            $("#editClueModal").modal("hide");
+                        } else {
+                            alert("更新失败!");
+                        }
+                    }
+                })
+            });
+
+            //搜索
+            $("#search-button").click(function () {
+                $("#hidden-fullname").val($.trim($("#search-fullname").val()));
+                $("#hidden-company").val($.trim($("#search-company").val()));
+                $("#hidden-phone").val($.trim($("#search-phone").val()));
+                $("#hidden-source").val($.trim($("#search-source").val()));
+                $("#hidden-owner").val($.trim($("#search-owner").val()));
+                $("#hidden-mphone").val($.trim($("#search-mphone").val()));
+                $("#hidden-state").val($.trim($("#search-state").val()));
+
+                pageList(1, $("#cluePage").bs_pagination('getOption', 'rowsPerPage'));
+            });
+
             pageList(1, 2);
 
         });
@@ -135,9 +282,9 @@
 
                     var html = "";
                     $.each(data.cList, function (i, n) {
-                        html += '<tr>';
-                        html += '<td><input type="checkbox" class="xz" value="' + n.id + '" /></td>';
-                        html += '<td><a style="text-decoration: none; cursor: pointer;" href="clue/detailClue.do?id=' + n.id + '">' + n.fullname + n.appellation + '</a></td>';
+                        html += '<tr class="active">';
+                        html += '<td><input type="checkbox" name="xz" value="' + n.id + '" /></td>';
+                        html += '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'clue/detailClue.do?id=' + n.id + '\';">' + n.fullname + n.appellation + '</a></td>';
                         html += '<td>' + n.company + '</td>';
                         html += '<td>' + n.phone + '</td>';
                         html += '<td>' + n.mphone + '</td>';
@@ -513,10 +660,10 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">线索来源</div>
-                        <select class="form-control">
+                        <select class="form-control" id="search-source">
                             <option></option>
                             <c:forEach items="${applicationScope.sourceList}" var="c">
-                                <option value="${c.value}" id="search-source">${c.text}</option>
+                                <option value="${c.value}">${c.text}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -542,16 +689,16 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">线索状态</div>
-                        <select class="form-control">
+                        <select class="form-control" id="search-state">
                             <option></option>
                             <c:forEach items="${applicationScope.clueStateList}" var="c">
-                                <option value="${c.value}" id="search-state">${c.text}</option>
+                                <option value="${c.value}">${c.text}</option>
                             </c:forEach>
                         </select>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-default" id="search-button">查询</button>
+                <button type="button" class="btn btn-default" id="search-button">查询</button>
 
             </form>
         </div>
